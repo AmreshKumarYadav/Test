@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="28.137" timestamp="2024-09-23T09:58:58.748114+05:30" hostname="DESKTOP-IDQ5A3O"><testcase classname="test_HomePage.TestHomePage" name="test_formSubmission[getData0]" time="12.073"><failure message="AssertionError: assert 'Success1' in '×\nSuccess! The Form has been submitted successfully!.'">self = &lt;tests.test_HomePage.TestHomePage object at 0x000001DD18EC8E00&gt;
+getData = {'Pwd': None, 'firstname': 'Amresh ', 'gender': 'Male', 'lastname': 'abc@gmail.com'}
+
+    def test_formSubmission(self,getData):
+        log = self.getLogger()
+        homepage= HomePage(self.driver)
+        log.info("first name is "+getData["firstname"])
+        time.sleep(2)
+        homepage.getName().send_keys(getData["firstname"])
+        time.sleep(2)
+        homepage.getEmail().send_keys(getData["lastname"])
+        time.sleep(2)
+        homepage.getCheckBox().click()
+        self.selectOptionByText(homepage.getGender(), getData["gender"])
+        time.sleep(2)
+    
+        homepage.submitForm().click()
+    
+        alertText = homepage.getSuccessMessage().text
+        time.sleep(2)
+&gt;       assert ("Success1" in alertText)
+E       AssertionError: assert 'Success1' in '×\nSuccess! The Form has been submitted successfully!.'
+
+test_HomePage.py:29: AssertionError</failure></testcase><testcase classname="test_e2e.TestOne" name="test_e2e" time="15.748" /></testsuite></testsuites>
