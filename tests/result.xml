@@ -1,36 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="28.351" timestamp="2024-09-19T18:44:09.340026+05:30" hostname="DESKTOP-IDQ5A3O"><testcase classname="test_HomePage.TestHomePage" name="test_formSubmission[getData0]" time="11.992" /><testcase classname="test_e2e.TestOne" name="test_e2e" time="16.094"><failure message="AssertionError: assert 'Success1! Thank you!' in '×\nSuccess! Thank you! Your order will be delivered in next few weeks :-).'">self = &lt;tests.test_e2e.TestOne object at 0x00000162780A87D0&gt;
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="28.137" timestamp="2024-09-23T09:58:58.748114+05:30" hostname="DESKTOP-IDQ5A3O"><testcase classname="test_HomePage.TestHomePage" name="test_formSubmission[getData0]" time="12.073"><failure message="AssertionError: assert 'Success1' in '×\nSuccess! The Form has been submitted successfully!.'">self = &lt;tests.test_HomePage.TestHomePage object at 0x000001DD18EC8E00&gt;
+getData = {'Pwd': None, 'firstname': 'Amresh ', 'gender': 'Male', 'lastname': 'abc@gmail.com'}
 
-    def test_e2e(self):
+    def test_formSubmission(self,getData):
         log = self.getLogger()
-        homePage = HomePage(self.driver)
-        checkoutpage = homePage.shopItems()
-        log.info("getting all the card titles")
+        homepage= HomePage(self.driver)
+        log.info("first name is "+getData["firstname"])
         time.sleep(2)
-        cards = checkoutpage.getCardTitles()
-        i = -1
-        for card in cards:
-            i = i + 1
-            cardText = card.text
-            log.info(cardText)
-            if cardText == "Blackberry":
-                checkoutpage.getCardFooter()[i].click()
-    
-        self.driver.find_element(By.CSS_SELECTOR,"a[class*='btn-primary']").click()
+        homepage.getName().send_keys(getData["firstname"])
+        time.sleep(2)
+        homepage.getEmail().send_keys(getData["lastname"])
+        time.sleep(2)
+        homepage.getCheckBox().click()
+        self.selectOptionByText(homepage.getGender(), getData["gender"])
         time.sleep(2)
     
-        confirmpage = checkoutpage.checkOutItems()
-        log.info("Entering country name as ind")
-        self.driver.find_element(By.ID,"country").send_keys("ind")
-        # time.sleep(5)
-        self.verifyLinkPresence("India")
+        homepage.submitForm().click()
+    
+        alertText = homepage.getSuccessMessage().text
         time.sleep(2)
-        self.driver.find_element(By.LINK_TEXT,"India").click()
-        self.driver.find_element(By.XPATH,"//div[@class='checkbox checkbox-primary']").click()
-        self.driver.find_element(By.CSS_SELECTOR,"[type='submit']").click()
-        textMatch = self.driver.find_element(By.CSS_SELECTOR,"[class*='alert-success']").text
-        log.info("Text received from application is "+textMatch)
-        time.sleep(2)
-&gt;       assert ("Success1! Thank you!" in textMatch)
-E       AssertionError: assert 'Success1! Thank you!' in '×\nSuccess! Thank you! Your order will be delivered in next few weeks :-).'
+&gt;       assert ("Success1" in alertText)
+E       AssertionError: assert 'Success1' in '×\nSuccess! The Form has been submitted successfully!.'
 
-test_e2e.py:46: AssertionError</failure></testcase></testsuite></testsuites>
+test_HomePage.py:29: AssertionError</failure></testcase><testcase classname="test_e2e.TestOne" name="test_e2e" time="15.748" /></testsuite></testsuites>
